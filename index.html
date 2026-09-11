@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shashwat Singh — Data & AI Engineering</title>
+<style>
+  :root{
+    --paper:#FFFDF9;
+    --paper-2:#FAFAF8;
+    --ink:#1B1F1A;
+    --ink-soft:#5B6259;
+    --accent:#2B5940;
+    --accent-amber:#C97D2F;
+    --accent-clay:#B4552F;
+    --accent-teal:#316A6E;
+    --tint-green:#EEF3EC;
+    --tint-amber:#FBF1E4;
+    --tint-teal:#EAF2F1;
+    --line:#E4DFD3;
+    --line-soft:#EEE9DC;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --serif: 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:
+      radial-gradient(1100px 500px at 8% -6%, var(--tint-amber) 0%, transparent 55%),
+      radial-gradient(900px 500px at 96% 12%, var(--tint-teal) 0%, transparent 50%),
+      radial-gradient(1000px 600px at 50% 55%, var(--tint-green) 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--accent); color:#fff; }
+  a{ color:inherit; }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity 0.8s cubic-bezier(.2,.6,.2,1) 0.15s, transform 0.8s cubic-bezier(.2,.6,.2,1) 0.15s;
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .reveal-stagger > *{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal-stagger.is-visible > *{
+    opacity:1;
+    transform:translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .reveal-stagger, .reveal-stagger > *{
+      opacity:1 !important; transform:none !important; transition:none !important;
+    }
+  }
+
+  /* ---------- HEADER ---------- */
+  header.site{
+    padding:64px 0 44px;
+    border-bottom:1px solid var(--line);
+  }
+  .id-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  h1.name{
+    font-family:var(--serif);
+    font-size:2.3rem;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+  .role-line{
+    font-family:var(--mono);
+    color:var(--accent);
+    font-size:0.9rem;
+    margin-top:8px;
+  }
+  .contact-block{
+    font-family:var(--mono);
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    text-align:right;
+    line-height:1.95;
+  }
+  .contact-block a{ text-decoration:none; border-bottom:1px solid transparent; }
+  .contact-block a:hover{ color:var(--accent); border-color:var(--accent); }
+
+  /* ---------- HERO / PIPELINE ---------- */
+  section.hero{
+    padding:56px 0 44px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero p.lede{
+    font-family:var(--serif);
+    font-size:1.28rem;
+    max-width:640px;
+    color:#2A2E29;
+    line-height:1.55;
+  }
+  .pipeline{ margin-top:48px; }
+  .pipeline svg{ width:100%; height:auto; display:block; }
+  .pipeline-caption{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    margin-top:12px;
+    letter-spacing:0.02em;
+  }
+  .pipeline .node{
+    opacity:0;
+    transform:scale(0.4);
+    transform-origin:center;
+    transition:opacity 0.6s ease 0.5s, transform 0.6s cubic-bezier(.2,.7,.3,1.3) 0.5s;
+  }
+  .pipeline.is-visible .node{ opacity:1; transform:scale(1); }
+  .pipeline .label{
+    opacity:0;
+    transition:opacity 0.6s ease 0.8s;
+  }
+  .pipeline.is-visible .label{ opacity:1; }
+  .pipeline .seg{
+    stroke-dasharray:200;
+    stroke-dashoffset:200;
+    transition:stroke-dashoffset 1.1s ease 0.3s;
+  }
+  .pipeline.is-visible .seg{ stroke-dashoffset:0; }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding:56px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:34px;
+  }
+  .sec-num{ font-family:var(--mono); color:var(--accent); font-size:0.85rem; }
+  .sec-title{ font-family:var(--serif); font-size:1.5rem; font-weight:600; }
+
+  /* ---------- EXPERIENCE ---------- */
+  .role{
+    display:grid;
+    grid-template-columns:170px 1fr;
+    gap:24px;
+    padding:24px 0;
+    border-top:1px solid var(--line-soft);
+  }
+  .role:first-child{ border-top:none; padding-top:0; }
+  .role-meta{ font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); }
+  .role-meta .dates{ display:block; margin-bottom:4px; }
+  .role-title{ font-weight:600; font-size:1.04rem; margin-bottom:2px; color:var(--ink); }
+  .role-org{ color:var(--accent); font-size:0.92rem; margin-bottom:10px; font-family:var(--mono); }
+  .role ul{ list-style:none; }
+  .role li{ position:relative; padding-left:16px; margin-bottom:8px; font-size:0.95rem; color:#3C433C; }
+  .role li::before{ content:"—"; position:absolute; left:0; color:var(--ink-soft); }
+
+  @media (max-width:640px){ .role{ grid-template-columns:1fr; gap:6px; } }
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+  .proj{
+    background:var(--paper);
+    padding:28px 30px;
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    gap:24px;
+  }
+  .proj-head{ font-weight:600; font-size:1.03rem; color:var(--ink); }
+  .proj-tag{ font-family:var(--mono); font-size:0.72rem; color:var(--accent); margin-top:6px; display:block; }
+  .proj p{ font-size:0.93rem; color:#3C433C; margin-bottom:9px; }
+  .proj p:last-child{ margin-bottom:0; }
+
+  @media (max-width:640px){ .proj{ grid-template-columns:1fr; } }
+
+  /* ---------- SKILLS ---------- */
+  .skill-cols{ display:grid; grid-template-columns:repeat(3, 1fr); gap:30px; }
+  .skill-col h4{
+    font-family:var(--mono);
+    font-size:0.76rem;
+    color:var(--accent);
+    margin-bottom:14px;
+    font-weight:500;
+  }
+  .skill-col ul{ list-style:none; }
+  .skill-col li{ font-size:0.92rem; color:#3C433C; margin-bottom:7px; }
+
+  @media (max-width:640px){ .skill-cols{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- ACHIEVEMENTS ---------- */
+  .ach-list{ list-style:none; }
+  .ach-list li{ font-size:0.95rem; color:#3C433C; padding:12px 0; border-top:1px solid var(--line-soft); }
+  .ach-list li:first-child{ border-top:none; padding-top:0; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding:44px 0 64px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  footer .f-note{ font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); }
+  footer .f-links a{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    color:var(--ink);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    margin-left:18px;
+    padding-bottom:2px;
+  }
+  footer .f-links a:hover{ color:var(--accent); border-color:var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="site">
+    <div class="id-row">
+      <div>
+        <h1 class="name">Shashwat Singh</h1>
+        <div class="role-line">data engineering / applied AI / agentic systems</div>
+      </div>
+      <div class="contact-block">
+        <div><a href="mailto:singhshashwat2108@gmail.com">singhshashwat2108@gmail.com</a></div>
+        <div>+91&nbsp;76670&nbsp;21832</div>
+        <div><a href="https://linkedin.com/in/ssingh2108" target="_blank">linkedin.com/in/ssingh2108</a></div>
+        <div><a href="https://github.com/singhshashwat2108" target="_blank">github.com/singhshashwat2108</a></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <p class="lede reveal">B.Tech Computer Science student (VIT Vellore, 2023–2027) building backend systems, data pipelines, and retrieval-augmented AI applications — with hands-on experience taking pipelines from raw data through validation to a served result.</p>
+
+    <div class="pipeline reveal">
+      <svg viewBox="0 0 860 120" xmlns="http://www.w3.org/2000/svg">
+        <line class="seg" x1="40" y1="60" x2="820" y2="60" stroke="#D8D6CC" stroke-width="1"/>
+        <circle class="node" cx="70" cy="60" r="5" fill="#2B5940"/>
+        <text class="label" x="70" y="30" fill="#1B1F1A" font-family="JetBrains Mono, monospace" font-size="13" text-anchor="middle">Ingest</text>
+        <text class="label" x="70" y="90" fill="#5B6259" font-family="JetBrains Mono, monospace" font-size="10.5" text-anchor="middle">Kafka · APIs</text>
+
+        <circle class="node" cx="280" cy="60" r="5" fill="#C97D2F"/>
+        <text class="label" x="280" y="30" fill="#1B1F1A" font-family="JetBrains Mono, monospace" font-size="13" text-anchor="middle">Transform</text>
+        <text class="label" x="280" y="90" fill="#5B6259" font-family="JetBrains Mono, monospace" font-size="10.5" text-anchor="middle">Python · SQL</text>
+
+        <circle class="node" cx="490" cy="60" r="5" fill="#316A6E"/>
+        <text class="label" x="490" y="30" fill="#1B1F1A" font-family="JetBrains Mono, monospace" font-size="13" text-anchor="middle">Retrieve</text>
+        <text class="label" x="490" y="90" fill="#5B6259" font-family="JetBrains Mono, monospace" font-size="10.5" text-anchor="middle">FAISS · embeddings</text>
+
+        <circle class="node" cx="700" cy="60" r="5" fill="#B4552F"/>
+        <text class="label" x="700" y="30" fill="#1B1F1A" font-family="JetBrains Mono, monospace" font-size="13" text-anchor="middle">Serve</text>
+        <text class="label" x="700" y="90" fill="#5B6259" font-family="JetBrains Mono, monospace" font-size="10.5" text-anchor="middle">REST APIs · dashboards</text>
+      </svg>
+      <div class="pipeline-caption">the shape of the work below, end to end</div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="sec-head reveal">
+      <span class="sec-num" style="color:var(--accent);">01</span>
+      <span class="sec-title">Experience</span>
+    </div>
+
+    <div class="reveal-stagger">
+      <div class="role">
+        <div class="role-meta"><span class="dates">Jul 2026 — Present</span><span>Bangalore</span></div>
+        <div>
+          <div class="role-title">AI Evaluation Intern</div>
+          <div class="role-org" style="color:var(--accent-teal);">Karya AI</div>
+          <ul>
+            <li>Ran large-scale inference workflows on GCP GPU instances to evaluate LLMs, ASR, machine translation, and TTS systems against benchmark datasets.</li>
+            <li>Performed error analysis and structured data analysis to surface model performance gaps, then communicated findings to guide model iteration.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role">
+        <div class="role-meta"><span class="dates">May — Jun 2026</span><span>Delhi</span></div>
+        <div>
+          <div class="role-title">Backend & System Design Intern</div>
+          <div class="role-org" style="color:var(--accent-amber);">Airtel Digital</div>
+          <ul>
+            <li>Designed scalable backend services in Spring Boot using microservice architecture and production-oriented system design.</li>
+            <li>Built event-driven workflows on Apache Kafka for asynchronous, high-throughput data processing with caching and distributed systems.</li>
+            <li>Optimized MySQL schemas, indexing, and JPA queries for concurrent workloads.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role">
+        <div class="role-meta"><span class="dates">Sep 2025 — Present</span><span>Vellore</span></div>
+        <div>
+          <div class="role-title">Computer Science Lead</div>
+          <div class="role-org" style="color:var(--accent-clay);">Team Sammard</div>
+          <ul>
+            <li>Lead software development for a student rocketry team — telemetry, communication, and mission-control systems.</li>
+            <li>Built the team's website and collaborated on GPS-based tracking and communication modules.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role">
+        <div class="role-meta"><span class="dates">May — Jun 2024</span><span>Patna</span></div>
+        <div>
+          <div class="role-title">App Developer Trainee</div>
+          <div class="role-org">National Informatics Centre</div>
+          <ul>
+            <li>Built Android features in Java and SQLite for infrastructure monitoring systems.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="sec-head reveal">
+      <span class="sec-num" style="color:var(--accent-amber);">02</span>
+      <span class="sec-title">Projects</span>
+    </div>
+
+    <div class="proj-grid reveal-stagger">
+      <div class="proj">
+        <div>
+          <div class="proj-head">Multimodal Document Intelligence Platform</div>
+          <span class="proj-tag" style="color:var(--accent);">RAG · vector search · multimodal</span>
+        </div>
+        <div>
+          <p>Built a retrieval-augmented generation system combining OCR, FAISS, LayoutLMv3, and Qwen2.5-VL to answer questions over documents that mix text and visual layout.</p>
+          <p>Owns the full pipeline: semantic embeddings, vector search, document retrieval, and multimodal reasoning — the same ingest-to-serve shape as production RAG tooling.</p>
+        </div>
+      </div>
+
+      <div class="proj">
+        <div>
+          <div class="proj-head">QueryHub — Distributed Microservice Platform</div>
+          <span class="proj-tag" style="color:var(--accent-amber);">Spring Boot · Kafka · Redis</span>
+        </div>
+        <div>
+          <p>Engineered a distributed discussion platform with microservices, Redis, Apache Kafka, MySQL, Docker, and an API gateway.</p>
+          <p>Implemented cache-aside caching, JWT auth, REST APIs, and event-driven communication with production-oriented system design.</p>
+        </div>
+      </div>
+
+      <div class="proj">
+        <div>
+          <div class="proj-head">Vision Transformer from Scratch</div>
+          <span class="proj-tag" style="color:var(--accent-teal);">PyTorch · model internals</span>
+        </div>
+        <div>
+          <p>Implemented a ViT from first principles — patch embeddings, multi-head self-attention, positional encoding, transformer encoder blocks.</p>
+          <p>Built the training and evaluation pipeline and benchmarked results against CNN-based architectures.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head reveal">
+      <span class="sec-num" style="color:var(--accent-teal);">03</span>
+      <span class="sec-title">Technical skills</span>
+    </div>
+
+    <div class="skill-cols reveal-stagger">
+      <div class="skill-col">
+        <h4 style="color:var(--accent);">languages & data</h4>
+        <ul>
+          <li>Python, SQL, Java, C++, JavaScript</li>
+          <li>MySQL, PostgreSQL, MongoDB</li>
+          <li>Pandas, NumPy</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <h4 style="color:var(--accent-amber);">AI / ML</h4>
+        <ul>
+          <li>LLMs, RAG, FAISS, embeddings</li>
+          <li>PyTorch, Scikit-learn, Transformers</li>
+          <li>Model evaluation, OCR, ASR</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <h4 style="color:var(--accent-teal);">systems & infra</h4>
+        <ul>
+          <li>Apache Kafka, Redis, Docker</li>
+          <li>REST APIs, microservices, JWT</li>
+          <li>Git, event-driven architecture</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="achievements">
+    <div class="sec-head reveal">
+      <span class="sec-num" style="color:var(--accent-clay);">04</span>
+      <span class="sec-title">Achievements</span>
+    </div>
+    <ul class="ach-list reveal-stagger">
+      <li>Certified in Machine Learning — Google Developers & SmartBridge.</li>
+      <li>Completed the British Airways Data Science job simulation.</li>
+      <li>Two-time Regional Medalist, Abacus Competition.</li>
+    </ul>
+  </section>
+
+  <footer class="reveal">
+    <div class="f-note">Built for the EA Data & AI Engineering Intern application · Sep 2026</div>
+    <div class="f-links">
+      <a href="mailto:singhshashwat2108@gmail.com">email</a>
+      <a href="https://linkedin.com/in/ssingh2108" target="_blank">linkedin</a>
+      <a href="https://github.com/singhshashwat2108" target="_blank">github</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var els = document.querySelectorAll('.reveal, .reveal-stagger, .pipeline');
+    if(!('IntersectionObserver' in window)){
+      els.forEach(function(el){ el.classList.add('is-visible'); });
+      return;
+    }
+    var stagger = function(container){
+      var children = container.querySelectorAll(':scope > *');
+      children.forEach(function(child, i){
+        child.style.transitionDelay = (220 + i * 150) + 'ms';
+      });
+    };
+    document.querySelectorAll('.reveal-stagger').forEach(stagger);
+
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -120px 0px' });
+
+    els.forEach(function(el){ io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
